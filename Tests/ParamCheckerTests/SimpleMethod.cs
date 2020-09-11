@@ -1,52 +1,47 @@
 using System.Collections.Generic;
-using NUnit.Framework;
+using Fody;
+using Xunit;
+
 // ReSharper disable UnusedMember.Local
 
-[TestFixture]
 public class SimpleMethod
 {
- 
-  
-
-    [Test]
+    [Fact]
     public void Simple()
     {
         var target = TypeFinder.Find<SimpleMethod>();
-        var methodDefinitions = target.FindMethodDefinitions("Method", null);
-        Assert.AreEqual(1, methodDefinitions.Count);
+        var method = target.FindMethodDefinitions("Method", null);
+        Assert.NotNull(method);
     }
 
-    [Test]
+    [Fact]
     public void SimpleParam()
     {
         var target = TypeFinder.Find<SimpleMethod>();
-        var methodDefinitions = target.FindMethodDefinitions("MethodWithParam", new List<string> { "System.Int32" });
-        Assert.AreEqual(1, methodDefinitions.Count);
+        var method = target.FindMethodDefinitions("MethodWithParam", new List<string> { "System.Int32" });
+        Assert.NotNull(method);
     }
-    [Test]
+
+    [Fact]
     public void BadNamespace()
     {
         var target = TypeFinder.Find<SimpleMethod>();
-        var methodDefinitions = target.FindMethodDefinitions("MethodWithParam", new List<string> { "System2.Int32" });
-        Assert.AreEqual(0, methodDefinitions.Count);
+        Assert.Throws<WeavingException>(() => target.FindMethodDefinitions("MethodWithParam", new List<string> {"System2.Int32"}));
     }
-
 
     void Method()
     {
-        
     }
 
-    [Test]
+    [Fact]
     public void WithParam()
     {
-        var methodDefinitions = TypeFinder.Find<SimpleMethod>().FindMethodDefinitions("MethodWithParam", null);
-        Assert.AreEqual(1, methodDefinitions.Count);
+        var method = TypeFinder.Find<SimpleMethod>().FindMethodDefinitions("MethodWithParam", null);
+        Assert.NotNull(method);
     }
 
     // ReSharper disable once UnusedParameter.Local
     void MethodWithParam(int param)
     {
-
     }
 }

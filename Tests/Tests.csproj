@@ -1,95 +1,31 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProductVersion>8.0.30703</ProductVersion>
-    <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{5A86453B-96FB-4B6E-A283-225BB9F753D3}</ProjectGuid>
-    <OutputType>Library</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Tests</RootNamespace>
-    <AssemblyName>Tests</AssemblyName>
-    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
-    <FileAlignment>512</FileAlignment>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
+    <TargetFrameworks>net48;netcoreapp2.2</TargetFrameworks>
+    <DisableFody>true</DisableFody>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Microsoft.Build.Utilities.v4.0" />
     <Reference Include="Microsoft.CSharp" />
-    <Reference Include="Mono.Cecil">
-      <HintPath>..\packages\FodyCecil.1.29.4\lib\net40\Mono.Cecil.dll</HintPath>
-    </Reference>
-    <Reference Include="Mono.Cecil.Mdb">
-      <HintPath>..\packages\FodyCecil.1.29.4\lib\net40\Mono.Cecil.Mdb.dll</HintPath>
-    </Reference>
-    <Reference Include="Mono.Cecil.Pdb">
-      <HintPath>..\packages\FodyCecil.1.29.4\lib\net40\Mono.Cecil.Pdb.dll</HintPath>
-    </Reference>
-    <Reference Include="Mono.Cecil.Rocks">
-      <HintPath>..\packages\FodyCecil.1.29.4\lib\net40\Mono.Cecil.Rocks.dll</HintPath>
-    </Reference>
-    <Reference Include="nunit.framework, Version=3.4.1.0, Culture=neutral, PublicKeyToken=2638cd05610744eb, processorArchitecture=MSIL">
-      <HintPath>..\packages\NUnit.3.4.1\lib\net45\nunit.framework.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="System" />
-    <Reference Include="System.Core" />
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Xml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="MockAssemblyResolver.cs" />
-    <Compile Include="ParamCheckerTests\GenericMethod.cs" />
-    <Compile Include="ParamCheckerTests\MultiLayerNestedClass.cs" />
-    <Compile Include="ParamCheckerTests\NestedClass.cs" />
-    <Compile Include="ParamCheckerTests\SimpleMethod.cs" />
-    <Compile Include="ParamCheckerTests\TypeFinder.cs" />
-    <Compile Include="TypeNameParserTests.cs" />
-    <Compile Include="Verifier.cs" />
-    <Compile Include="IntegrationTests.cs" />
-    <Compile Include="AssemblyExtensions.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\AssemblyToReference\AssemblyToReference.csproj">
-      <Project>{2e1f9913-4aa2-47a5-bc77-a76587f400c5}</Project>
-      <Name>AssemblyToReference</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\AttributeAssembly\AttributeAssembly.csproj">
-      <Project>{40235741-d750-45b1-8dc5-49576025aba9}</Project>
-      <Name>AttributeAssembly</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Fody\Fody.csproj">
-      <Project>{C3578A7B-09A6-4444-9383-0DEAFA4958BD}</Project>
-      <Name>Fody</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="packages.config" />
-  </ItemGroup>
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <ItemGroup>
-    <ProjectReference Include="..\AssemblyToProcess\AssemblyToProcess.csproj">
-      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
-      <Name>AssemblyToProcess</Name>
-    </ProjectReference>
+    <PackageReference Include="FodyHelpers" Version="6.2.5" />
+    <PackageReference Include="MarkdownSnippets.MsBuild" Version="21.0.1" PrivateAssets="all" />
+    <PackageReference Include="Xunit" Version="2.4.1" />
+    <PackageReference Include="XunitContext" Version="2.0.1" />
+    <PackageReference Include="Verify.Xunit" Version="6.13.0" />
+    <PackageReference Include="xunit.runner.visualstudio" Version="2.4.3" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.7.1" />
+    <ProjectReference Include="..\AssemblyToReference\AssemblyToReference.csproj" />
+    <ProjectReference Include="..\AssemblyToProcess\AssemblyToProcess.csproj" />
+    <ProjectReference Include="..\InfoOf\InfoOf.csproj" />
+    <ProjectReference Include="..\InfoOf.Fody\InfoOf.Fody.csproj" />
+
+    <None Update="WithBlocksTests.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>WithBlocksTests.Generated.cs</LastGenOutput>
+    </None>
+    <Compile Update="WithBlocksTests.Generated.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>WithBlocksTests.tt</DependentUpon>
+    </Compile>
   </ItemGroup>
 </Project>

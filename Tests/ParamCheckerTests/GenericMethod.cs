@@ -1,21 +1,18 @@
-using NUnit.Framework;
+using Xunit;
+
 // ReSharper disable UnusedMember.Local
 
-[TestFixture]
 public class GenericMethod
 {
-
-    [Test]
+    [Fact]
     public void Simple()
     {
         var target = TypeFinder.Find<GenericMethod>();
-        var methodDefinitions = target.FindMethodDefinitions("Method", null);
-        Assert.AreEqual(1, methodDefinitions.Count);
+        var methodDefinition = target.FindMethodDefinitions("Method", null);
+        Assert.NotNull(methodDefinition);
     }
 
     void Method<T>()
     {
-        
     }
-
 }
